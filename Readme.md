@@ -10,7 +10,8 @@ Implementation of an `AppBar` in WPF based off of [Using Application Desktop Too
  - Handle screen layout changes and monitor disconnections
  - Handle <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>Left</kbd> and attempts to minimize or move the window
  - Handle co-operation with other appbars (OneNote et al.)
-
+ - Handle per-monitor DPI scaling
+ 
  ## License
 
 MIT License
@@ -20,7 +21,7 @@ MIT License
     <apb:AppBarWindow x:Class="WpfAppBarDemo.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:apb="clr-namespace:WpfAppBar;assembly=WpfAppBar"
         DataContext="{Binding RelativeSource={RelativeSource Self}}" Title="MainWindow" 
-        DockedWidthOrHeight="200">
+        DockedWidthOrHeight="200" MinWidth="100" MinHeight="100">
         <Grid>
             <Button x:Name="btClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="23" Margin="10,10,0,0" Click="btClose_Click"/>
             <ComboBox x:Name="cbMonitor" SelectedItem="{Binding Path=Monitor, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,38,0,0"/>
@@ -55,9 +56,47 @@ Codebehind:
 
         private void rzThumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            this.DockedWidthOrHeight += (int)e.HorizontalChange;
+            this.DockedWidthOrHeight += (int)(e.HorizontalChange / VisualTreeHelper.GetDpi(this).PixelsPerDip);
         }
     }
+
+App.config (for Monitor-specific DPI support):
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <configuration>
+    <startup>
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.6.2"/>
+    </startup>
+    <runtime>
+        <AppContextSwitchOverrides value="Switch.System.Windows.DoNotScaleForDpiChanges=false"/>
+    </runtime>
+    </configuration>
+
+App.manifest (for Monitor-specific DPI support):
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <assembly manifestVersion="1.0" xmlns="urn:schemas-microsoft-com:asm.v1">
+    <assemblyIdentity version="1.0.0.0" name="MyApplication.app"/>
+    <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">
+        <security>
+        <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+            <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+        </requestedPrivileges>
+        </security>
+    </trustInfo>
+    <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+        <application>
+        <!-- Windows 10 -->
+        <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />
+        </application>
+    </compatibility>
+    <application xmlns="urn:schemas-microsoft-com:asm.v3">
+        <windowsSettings>
+        <dpiAware xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">true</dpiAware>
+        <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitor</dpiAwareness>
+        </windowsSettings>
+    </application>
+    </assembly>
 
 ## Screenshots
 
