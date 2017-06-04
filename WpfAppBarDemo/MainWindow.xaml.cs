@@ -61,7 +61,7 @@ namespace WpfAppBarDemo
                 default: throw new NotSupportedException();
             }
 
-            this.DockedWidthOrHeight += (int)delta;
+            this.DockedWidthOrHeight += (int)(delta / VisualTreeHelper.GetDpi(this).PixelsPerDip);
         }
     }
 }

@@ -10,12 +10,13 @@ using System.Windows.Interop;
 
 namespace WpfAppBar
 {
+    using System.Windows.Media;
     using static NativeMethods;
 
     public class AppBarWindow : Window
     {
         private bool IsAppBarRegistered;
-        private bool IsResizeAllowed;
+        private bool IsInAppBarResize;
 
         static AppBarWindow()
         {
@@ -111,6 +112,13 @@ namespace WpfAppBar
             }
         }
 
+        protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
+        {
+            base.OnDpiChanged(oldDpi, newDpi);
+
+            OnDockLocationChanged();
+        }
+
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -139,39 +147,59 @@ namespace WpfAppBar
             }
         }
 
+        private int WpfDimensionToDesktop(double dim)
+        {
+            var dpi = VisualTreeHelper.GetDpi(this);
+
+            return (int)Math.Ceiling(dim * dpi.PixelsPerDip);
+        }
+
+        private double DesktopDimensionToWpf(double dim)
+        {
+            var dpi = VisualTreeHelper.GetDpi(this);
+
+            return dim / dpi.PixelsPerDip;
+        }
+
         private void OnDockLocationChanged()
         {
+            if (IsInAppBarResize)
+            {
+                return;
+            }
+
             var abd = GetAppBarData();
             abd.rc = (RECT)GetSelectedMonitor().ViewportBounds;
 
             SHAppBarMessage(ABM.QUERYPOS, ref abd);
 
+            var dockedWidthOrHeightInDesktopPixels = WpfDimensionToDesktop(DockedWidthOrHeight);
             switch (DockMode)
             {
                 case AppBarDockMode.Top:
-                    abd.rc.bottom = abd.rc.top + DockedWidthOrHeight;
+                    abd.rc.bottom = abd.rc.top + dockedWidthOrHeightInDesktopPixels;
                     break;
                 case AppBarDockMode.Bottom:
-                    abd.rc.top = abd.rc.bottom - DockedWidthOrHeight;
+                    abd.rc.top = abd.rc.bottom - dockedWidthOrHeightInDesktopPixels;
                     break;
                 case AppBarDockMode.Left:
-                    abd.rc.right = abd.rc.left + DockedWidthOrHeight;
+                    abd.rc.right = abd.rc.left + dockedWidthOrHeightInDesktopPixels;
                     break;
                 case AppBarDockMode.Right:
-                    abd.rc.left = abd.rc.right - DockedWidthOrHeight;
+                    abd.rc.left = abd.rc.right - dockedWidthOrHeightInDesktopPixels;
                     break;
                 default: throw new NotSupportedException();
             }
 
             SHAppBarMessage(ABM.SETPOS, ref abd);
-            IsResizeAllowed = true;
+            IsInAppBarResize = true;
             try
             {
                 WindowBounds = (Rect)abd.rc;
             }
             finally
             {
-                IsResizeAllowed = false;
+                IsInAppBarResize = false;
             }
         }
 
@@ -214,7 +242,7 @@ namespace WpfAppBar
 
         public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_WINDOWPOSCHANGING && !IsResizeAllowed)
+            if (msg == WM_WINDOWPOSCHANGING && !IsInAppBarResize)
             {
                 var wp = Marshal.PtrToStructure<WINDOWPOS>(lParam);
                 wp.flags |= SWP_NOMOVE | SWP_NOSIZE;
@@ -248,10 +276,10 @@ namespace WpfAppBar
         {
             set
             {
-                this.Left = value.Left;
-                this.Top = value.Top;
-                this.Width = value.Width;
-                this.Height = value.Height;
+                this.Left = DesktopDimensionToWpf(value.Left);
+                this.Top = DesktopDimensionToWpf(value.Top);
+                this.Width = DesktopDimensionToWpf(value.Width);
+                this.Height = DesktopDimensionToWpf(value.Height);
             }
         }
     }
