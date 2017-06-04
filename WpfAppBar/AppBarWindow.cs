@@ -17,12 +17,20 @@ namespace WpfAppBar
         private bool IsAppBarRegistered;
         private bool IsResizeAllowed;
 
+        static AppBarWindow()
+        {
+            ShowInTaskbarProperty.OverrideMetadata(typeof(AppBarWindow), new FrameworkPropertyMetadata(false));
+            MinHeightProperty.OverrideMetadata(typeof(AppBarWindow), new FrameworkPropertyMetadata(20d, MinMaxHeightWidth_Changed));
+            MinWidthProperty.OverrideMetadata(typeof(AppBarWindow), new FrameworkPropertyMetadata(20d, MinMaxHeightWidth_Changed));
+            MaxHeightProperty.OverrideMetadata(typeof(AppBarWindow), new FrameworkPropertyMetadata(MinMaxHeightWidth_Changed));
+            MaxWidthProperty.OverrideMetadata(typeof(AppBarWindow), new FrameworkPropertyMetadata(MinMaxHeightWidth_Changed));
+        }
+
         public AppBarWindow()
         {
             this.WindowStyle = WindowStyle.None;
             this.ResizeMode = ResizeMode.NoResize;
             this.Topmost = true;
-            this.ShowInTaskbar = false;
         }
 
         public AppBarDockMode DockMode
@@ -53,7 +61,45 @@ namespace WpfAppBar
 
         public static readonly DependencyProperty DockedWidthOrHeightProperty =
             DependencyProperty.Register("DockedWidthOrHeight", typeof(int), typeof(AppBarWindow),
-                new FrameworkPropertyMetadata(200, DockLocation_Changed));
+                new FrameworkPropertyMetadata(200, DockLocation_Changed, DockedWidthOrHeight_Coerce));
+
+        private static object DockedWidthOrHeight_Coerce(DependencyObject d, object baseValue)
+        {
+            var @this = (AppBarWindow)d;
+            var newValue = (int)baseValue;
+
+            switch (@this.DockMode)
+            {
+                case AppBarDockMode.Left:
+                case AppBarDockMode.Right:
+                    return BoundIntToDouble(newValue, @this.MinWidth, @this.MaxWidth);
+
+                case AppBarDockMode.Top:
+                case AppBarDockMode.Bottom:
+                    return BoundIntToDouble(newValue, @this.MinHeight, @this.MaxHeight);
+
+                default: throw new NotSupportedException();
+            }
+        }
+
+        private static int BoundIntToDouble(int value, double min, double max)
+        {
+            if (min > value)
+            {
+                return (int)Math.Ceiling(min);
+            }
+            if (max < value)
+            {
+                return (int)Math.Floor(max);
+            }
+
+            return value;
+        }
+
+        private static void MinMaxHeightWidth_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            d.CoerceValue(DockedWidthOrHeightProperty);
+        }
 
         private static void DockLocation_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

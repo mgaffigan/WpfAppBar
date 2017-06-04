@@ -43,7 +43,25 @@ namespace WpfAppBarDemo
 
         private void rzThumb_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            this.DockedWidthOrHeight += (int)e.HorizontalChange;
+            double delta;
+            switch (DockMode)
+            {
+                case AppBarDockMode.Left:
+                    delta = e.HorizontalChange;
+                    break;
+                case AppBarDockMode.Right:
+                    delta = e.HorizontalChange * -1;
+                    break;
+                case AppBarDockMode.Top:
+                    delta = e.VerticalChange;
+                    break;
+                case AppBarDockMode.Bottom:
+                    delta = e.VerticalChange * -1;
+                    break;
+                default: throw new NotSupportedException();
+            }
+
+            this.DockedWidthOrHeight += (int)delta;
         }
     }
 }
