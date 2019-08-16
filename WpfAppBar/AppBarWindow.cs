@@ -125,6 +125,14 @@ namespace WpfAppBar
 
             // add the hook, setup the appbar
             var source = (HwndSource)PresentationSource.FromVisual(this);
+
+            if (!ShowInTaskbar)
+            {
+                var exstyle = (ulong)GetWindowLongPtr(source.Handle, GWL_EXSTYLE);
+                exstyle |= (ulong)((uint)WS_EX_TOOLWINDOW);
+                SetWindowLongPtr(source.Handle, GWL_EXSTYLE, unchecked((IntPtr)exstyle));
+            }
+
             source.AddHook(WndProc);
 
             var abd = GetAppBarData();

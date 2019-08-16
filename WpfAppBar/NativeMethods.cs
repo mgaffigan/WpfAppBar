@@ -11,6 +11,7 @@ namespace WpfAppBar
     internal static class NativeMethods
     {
         private const string User32 = "user32.dll";
+        private const string ShCore = "ShCore.dll";
 
         public enum ABEdge
         {
@@ -30,6 +31,23 @@ namespace WpfAppBar
             public int uEdge;
             public RECT rc;
             public IntPtr lParam;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+
+            public static explicit operator POINT(Point p)
+            {
+                return new POINT { X = (int)p.X, Y = (int)p.Y };
+            }
+
+            public static explicit operator Point(POINT r)
+            {
+                return new Point(r.X, r.Y);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -158,6 +176,12 @@ namespace WpfAppBar
             WINDOWARRANGE
         }
 
+        public const int
+            GWL_EXSTYLE = -20;
+
+        public const int
+            WS_EX_TOOLWINDOW = 0x00000080;
+
         [DllImport("shell32.dll", ExactSpelling = true)]
         public static extern uint SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
 
@@ -167,10 +191,38 @@ namespace WpfAppBar
         [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
 
+        public static IntPtr GetWindowLongPtr(IntPtr hWnd, int index)
+            => IntPtr.Size == 4 ? GetWindowLongPtr32(hWnd, index) : GetWindowLongPtr64(hWnd, index);
+
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+        private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int index);
+
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+        private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int index);
+
+        public static IntPtr SetWindowLongPtr(IntPtr hWnd, int index, IntPtr newLong)
+            => IntPtr.Size == 4 ? SetWindowLongPtr32(hWnd, index, newLong) : SetWindowLongPtr64(hWnd, index, newLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        private static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, int index, IntPtr newLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int index, IntPtr newLong);
+
+
         [Flags]
         public enum MONITORINFOF
         {
             PRIMARY = 0x1
+        }
+
+        [Flags]
+        public enum MONITOR_DPI_TYPE
+        {
+            MDT_EFFECTIVE_DPI = 0,
+            MDT_ANGULAR_DPI = 1,
+            MDT_RAW_DPI = 2,
+            MDT_DEFAULT = MDT_EFFECTIVE_DPI
         }
 
         private const int CCHDEVICENAME = 32;
@@ -193,5 +245,11 @@ namespace WpfAppBar
 
         [DllImport(User32)]
         public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
+
+        [DllImport(ShCore, ExactSpelling = true, PreserveSig = false)]
+        public static extern void GetDpiForMonitor(IntPtr hMonitor, MONITOR_DPI_TYPE dpiType, out int dpiX, out int dpiY);
+
+        //[DllImport(User32, ExactSpelling = true, SetLastError = true)]
+        //public static extern bool PhysicalToLogicalPointForPerMonitorDPI(IntPtr hWnd, POINT point);
     }
 }
