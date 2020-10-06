@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppBarDemo", "WpfAppBarDemo\WpfAppBarDemo.csproj", "{23DF82A9-C329-43E7-AE2A-2FC1169484E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfAppBar", "WpfAppBar\WpfAppBar.csproj", "{8B5A8580-4D07-432C-AB38-26944DB99BC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UndockSample", "UndockSample\UndockSample.csproj", "{3FC768D9-0F42-4D15-B589-1E7902BF8F38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{8B5A8580-4D07-432C-AB38-26944DB99BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B5A8580-4D07-432C-AB38-26944DB99BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B5A8580-4D07-432C-AB38-26944DB99BC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D353A1F9-DA93-41A7-B65B-7A7B66314F56}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,25 @@
+﻿<local:DockableWindowControl x:Class="UndockSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UndockSample"
+        mc:Ignorable="d">
+    <DockPanel>
+        <Button Content="Switch DockMode" DockPanel.Dock="Top" Margin="10" Width="75" Height="23" x:Name="btSwitchDockMode" Click="btSwitchDockMode_Click" />
+        <TabControl>
+            <TabItem Header="Tab 1">
+                <TextBox />
+            </TabItem>
+            <TabItem Header="Tab 2">
+                <ProgressBar IsIndeterminate="True" />
+            </TabItem>
+            <TabItem Header="Tab 3">
+                <DatePicker />
+            </TabItem>
+            <TabItem Header="Tab 4">
+                <Slider />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</local:DockableWindowControl>
