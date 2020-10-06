@@ -147,6 +147,11 @@ namespace WpfAppBar
         {
             base.OnClosing(e);
 
+            if (e.Cancel)
+            {
+                return;
+            }
+
             if (IsAppBarRegistered)
             {
                 var abd = GetAppBarData();
