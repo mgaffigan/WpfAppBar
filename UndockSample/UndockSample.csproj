@@ -97,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WpfAppBar\WpfAppBar.csproj">
-      <Project>{8b5a8580-4d07-432c-ab38-26944db99bc4}</Project>
+      <Project>{460dde4c-7c76-48d8-af72-8085e95d6965}</Project>
       <Name>WpfAppBar</Name>
     </ProjectReference>
   </ItemGroup>
