@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using static WpfAppBar.NativeMethods;
+using static Itp.WpfAppBar.NativeMethods;
 
-namespace WpfAppBar
+namespace Itp.WpfAppBar
 {
     public sealed class MonitorInfo : IEquatable<MonitorInfo>
     {

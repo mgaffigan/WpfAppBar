@@ -1,0 +1,22 @@
+name: Release tagged revision
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    - name: Build Itp.WpfAppBar
+      run: dotnet pack WpfAppBar -c Release -p:Version=${{github.ref_name}}
+    - name: NugetPush Itp.WpfAppBar
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} WpfAppBar/bin/Release/Itp.WpfAppBar.${{github.ref_name}}.nupkg

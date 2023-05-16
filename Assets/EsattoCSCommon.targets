@@ -1,0 +1,26 @@
+<Project>
+  <PropertyGroup>
+    <Authors>mgaffigan</Authors>
+    <Company>In Touch Technologies</Company>
+    <Copyright>© 2022 In Touch Technologies.  All rights reserved.</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryUrl>https://github.com/mgaffigan/WpfAppBar</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mgaffigan/WpfAppBar</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)public.snk</AssemblyOriginatorKeyFile>
+    <Version>2.0.0</Version>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)public.snk" Visible="false">
+      <Link>public.snk</Link>
+    </None>
+  </ItemGroup>
+</Project>

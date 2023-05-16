@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace WpfAppBar
+namespace Itp.WpfAppBar
 {
     using System.Windows.Media;
     using static NativeMethods;

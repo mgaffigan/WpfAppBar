@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAppBarDemo"
-        xmlns:apb="clr-namespace:WpfAppBar;assembly=WpfAppBar"
+        xmlns:apb="clr-namespace:Itp.WpfAppBar;assembly=Itp.WpfAppBar"
         mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="MainWindow" DockedWidthOrHeight="200" MinWidth="100" MinHeight="100">
+        Title="MainWindow" DockedWidthOrHeight="200" MinWidth="100" MinHeight="100"
+        d:DesignWidth="200" d:DesignHeight="400">
     <DockPanel>
         <Thumb Background="Gray" x:Name="rzThumb" DragCompleted="rzThumb_DragCompleted">
             <Thumb.Style>
