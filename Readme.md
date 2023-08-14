@@ -1,4 +1,6 @@
-# WpfAppBar
+# Itp.WpfAppBar
+
+[![Nuget](https://img.shields.io/nuget/v/Itp.WpfAppBar)](https://www.nuget.org/packages/Itp.WpfAppBar)
 
 Implementation of an `AppBar` in WPF based off of [Using Application Desktop Toolbars](https://msdn.microsoft.com/en-us/library/bb776821.aspx) and [Extend the Windows 95 Shell with Application Desktop Toolbars](https://www.microsoft.com/msj/archive/S274.aspx).
 
@@ -100,7 +102,7 @@ App.manifest (for Monitor-specific DPI support):
 
 ## Screenshots
 
-Changing docked position:
+Changing docked position ([sample](https://github.com/mgaffigan/WpfAppBar/tree/master/WpfAppBarDemo)):
 
 > [![AppBar docked to edges][1]][1]
 
@@ -112,8 +114,15 @@ Cooperation with other appbars:
 
 > [![Coordination][3]][3]
 
-Clone [from GitHub](https://github.com/mgaffigan/WpfAppBar) if you want to use it.  The library itself is only three files, and can easily be dropped in a project.
+Dock and undock ([sample](https://github.com/mgaffigan/WpfAppBar/tree/master/UndockSample)):
+
+> [![Undock][4]][4]
+
+[Add Nuget](https://www.nuget.org/packages/Itp.WpfAppBar) or clone [from GitHub](https://github.com/mgaffigan/WpfAppBar) if you want to use it.  The library itself is only three files, and can easily be dropped in a project.
+
+    <PackageReference Include="Itp.WpfAppBar" Version="*" />
 
   [1]: https://i.stack.imgur.com/f13P8.gif
   [2]: https://i.stack.imgur.com/ifgn8.gif
   [3]: https://i.stack.imgur.com/PiydR.gif
+  [4]: https://user-images.githubusercontent.com/12316225/95240977-c552da00-07d2-11eb-8ceb-8031641b1151.gif

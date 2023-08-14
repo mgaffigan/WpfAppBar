@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68B32B57-BB35-4370-8BB9-66C8DB080048}"
 	ProjectSection(SolutionItems) = preProject
 		Assets\EsattoCSCommon.targets = Assets\EsattoCSCommon.targets
+		LICENSE.txt = LICENSE.txt
 		Readme.md = Readme.md
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
