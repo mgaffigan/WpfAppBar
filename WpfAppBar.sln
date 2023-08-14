@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WinFormsAppBar", "Itp.WinFormsAppBar\Itp.WinFormsAppBar.csproj", "{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WinFormsAppBar.Demo", "Itp.WinFormsAppBar.Demo\Itp.WinFormsAppBar.Demo.csproj", "{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,14 @@ Global
 		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FC768D9-0F42-4D15-B589-1E7902BF8F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,47 @@
+﻿<apb:AppBarWindow x:Class="WpfAppBarDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppBarDemo"
+        xmlns:apb="clr-namespace:Itp.WpfAppBar;assembly=Itp.WpfAppBar"
+        mc:Ignorable="d" DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" DockedWidthOrHeight="200" MinWidth="100" MinHeight="100"
+        d:DesignWidth="200" d:DesignHeight="400">
+    <DockPanel>
+        <Thumb Background="Gray" x:Name="rzThumb" DragCompleted="rzThumb_DragCompleted">
+            <Thumb.Style>
+                <Style TargetType="{x:Type Thumb}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=DockMode}" Value="Left">
+                            <Setter Property="Width" Value="5" />
+                            <Setter Property="DockPanel.Dock" Value="Right" />
+                            <Setter Property="Cursor" Value="SizeWE" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=DockMode}" Value="Right">
+                            <Setter Property="Width" Value="5" />
+                            <Setter Property="DockPanel.Dock" Value="Left" />
+                            <Setter Property="Cursor" Value="SizeWE" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=DockMode}" Value="Top">
+                            <Setter Property="Height" Value="5" />
+                            <Setter Property="DockPanel.Dock" Value="Bottom" />
+                            <Setter Property="Cursor" Value="SizeNS" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=DockMode}" Value="Bottom">
+                            <Setter Property="Height" Value="5" />
+                            <Setter Property="DockPanel.Dock" Value="Top" />
+                            <Setter Property="Cursor" Value="SizeNS" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Thumb.Style>
+        </Thumb>
+
+        <Grid>
+            <Button x:Name="btClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="23" Margin="10,10,0,0" Click="btClose_Click"/>
+            <ComboBox x:Name="cbMonitor" SelectedItem="{Binding Path=Monitor, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,38,0,0"/>
+            <ComboBox x:Name="cbEdge" SelectedItem="{Binding Path=DockMode, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120"/>
+        </Grid>
+    </DockPanel>
+</apb:AppBarWindow>
