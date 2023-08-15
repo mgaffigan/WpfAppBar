@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net462;net48;net7.0-windows</TargetFrameworks>
-    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>annotations</Nullable>
 
-    <Description>WPF Window which creates a Windows App Bar</Description>
+    <Description>Winforms Window which creates a Windows App Bar</Description>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />

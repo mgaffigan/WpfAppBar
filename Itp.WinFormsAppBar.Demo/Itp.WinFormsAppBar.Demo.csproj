@@ -2,7 +2,9 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>true</ImplicitUsings>
+    <HighDpiMode>PerMonitorV2</HighDpiMode>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -13,6 +15,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WpfAppBar\Itp.WpfAppBar.csproj" />
+    <ProjectReference Include="..\Itp.WinFormsAppBar\Itp.WinFormsAppBar.csproj" />
   </ItemGroup>
 </Project>

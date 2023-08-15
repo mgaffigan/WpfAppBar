@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
-namespace Itp.WpfAppBar
+namespace Itp.WinFormsAppBar
 {
     internal static class NativeMethods
     {
@@ -41,7 +41,7 @@ namespace Itp.WpfAppBar
 
             public static explicit operator POINT(Point p)
             {
-                return new POINT { X = (int)p.X, Y = (int)p.Y };
+                return new POINT { X = p.X, Y = p.Y };
             }
 
             public static explicit operator Point(POINT r)
@@ -92,19 +92,14 @@ namespace Itp.WpfAppBar
                 }
             }
 
-            public static explicit operator Int32Rect(RECT r)
+            public static explicit operator Rectangle(RECT r)
             {
-                return new Int32Rect(r.left, r.top, r.Width, r.Height);
+                return new Rectangle(r.left, r.top, r.Width, r.Height);
             }
 
-            public static explicit operator Rect(RECT r)
+            public static explicit operator RECT(Rectangle r)
             {
-                return new Rect(r.left, r.top, r.Width, r.Height);
-            }
-
-            public static explicit operator RECT(Rect r)
-            {
-                return new RECT((int)r.Left, (int)r.Top, (int)r.Right, (int)r.Bottom);
+                return new RECT(r.Left, r.Top, r.Right, r.Bottom);
             }
         }
 
@@ -119,15 +114,15 @@ namespace Itp.WpfAppBar
             public int cy;
             public int flags;
 
-            public Rect Bounds
+            public Rectangle Bounds
             {
-                get { return new Rect(x, y, cx, cy); }
+                get { return new Rectangle(x, y, cx, cy); }
                 set
                 {
-                    x = (int)value.X;
-                    y = (int)value.Y;
-                    cx = (int)value.Width;
-                    cy = (int)value.Height;
+                    x = value.X;
+                    y = value.Y;
+                    cx = value.Width;
+                    cy = value.Height;
                 }
             }
         }
@@ -137,7 +132,9 @@ namespace Itp.WpfAppBar
             SWP_NOSIZE = 0x0001;
 
         public const int
+            WM_DESTROY = 0x0002,
             WM_ACTIVATE = 0x0006,
+            WM_SHOWWINDOW = 0x0018,
             WM_WINDOWPOSCHANGED = 0x0047,
             WM_SYSCOMMAND = 0x0112,
             WM_WINDOWPOSCHANGING = 0x0046;

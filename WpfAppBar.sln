@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfAppBarDemo", "WpfAppBarDemo\WpfAppBarDemo.csproj", "{23DF82A9-C329-43E7-AE2A-2FC1169484E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WpfAppBar.Demo", "WpfAppBarDemo\Itp.WpfAppBar.Demo.csproj", "{23DF82A9-C329-43E7-AE2A-2FC1169484E8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WpfAppBar", "WpfAppBar\Itp.WpfAppBar.csproj", "{8B5A8580-4D07-432C-AB38-26944DB99BC4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UndockSample", "UndockSample\UndockSample.csproj", "{3FC768D9-0F42-4D15-B589-1E7902BF8F38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WpfAppBar.UndockSample", "UndockSample\Itp.WpfAppBar.UndockSample.csproj", "{3FC768D9-0F42-4D15-B589-1E7902BF8F38}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{68B32B57-BB35-4370-8BB9-66C8DB080048}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,6 +20,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WinFormsAppBar", "Itp.WinFormsAppBar\Itp.WinFormsAppBar.csproj", "{9194C32E-52CA-4567-AFC2-9C1FD2DA6062}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Itp.WinFormsAppBar.Demo", "Itp.WinFormsAppBar.Demo\Itp.WinFormsAppBar.Demo.csproj", "{BDDA1B0B-A43E-454B-BE11-5F090FF4F485}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win Forms", "Win Forms", "{95EFDF56-7EDE-4AA4-B7EA-7DE8DD6FCF03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{55A6A36A-B278-44DF-8990-9F12E55C4C96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +54,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{23DF82A9-C329-43E7-AE2A-2FC1169484E8} = {55A6A36A-B278-44DF-8990-9F12E55C4C96}
+		{8B5A8580-4D07-432C-AB38-26944DB99BC4} = {55A6A36A-B278-44DF-8990-9F12E55C4C96}
+		{3FC768D9-0F42-4D15-B589-1E7902BF8F38} = {55A6A36A-B278-44DF-8990-9F12E55C4C96}
+		{9194C32E-52CA-4567-AFC2-9C1FD2DA6062} = {95EFDF56-7EDE-4AA4-B7EA-7DE8DD6FCF03}
+		{BDDA1B0B-A43E-454B-BE11-5F090FF4F485} = {95EFDF56-7EDE-4AA4-B7EA-7DE8DD6FCF03}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D353A1F9-DA93-41A7-B65B-7A7B66314F56}

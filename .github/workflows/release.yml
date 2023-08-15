@@ -20,3 +20,7 @@ jobs:
       run: dotnet pack WpfAppBar -c Release -p:Version=${{github.ref_name}}
     - name: NugetPush Itp.WpfAppBar
       run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} WpfAppBar/bin/Release/Itp.WpfAppBar.${{github.ref_name}}.nupkg
+    - name: Build Itp.WinFormsAppBar
+      run: dotnet pack Itp.WinFormsAppBar -c Release -p:Version=${{github.ref_name}}
+    - name: NugetPush Itp.WinFormsAppBar
+      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Itp.WinFormsAppBar/bin/Release/Itp.WinFormsAppBar.${{github.ref_name}}.nupkg

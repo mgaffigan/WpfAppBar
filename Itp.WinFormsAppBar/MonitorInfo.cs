@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using static Itp.WpfAppBar.NativeMethods;
+using static Itp.WinFormsAppBar.NativeMethods;
 
-namespace Itp.WpfAppBar
+namespace Itp.WinFormsAppBar
 {
     public sealed class MonitorInfo : IEquatable<MonitorInfo>
     {
-        public Rect ViewportBounds { get; }
+        public Rectangle ViewportBounds { get; }
 
-        public Rect WorkAreaBounds { get; }
+        public Rectangle WorkAreaBounds { get; }
 
         public bool IsPrimary { get; }
 
@@ -22,8 +23,8 @@ namespace Itp.WpfAppBar
 
         internal MonitorInfo(MONITORINFOEX mex)
         {
-            this.ViewportBounds = (Rect)mex.rcMonitor;
-            this.WorkAreaBounds = (Rect)mex.rcWork;
+            this.ViewportBounds = (Rectangle)mex.rcMonitor;
+            this.WorkAreaBounds = (Rectangle)mex.rcWork;
             this.IsPrimary = mex.dwFlags.HasFlag(MONITORINFOF.PRIMARY);
             this.DeviceId = mex.szDevice;
         }

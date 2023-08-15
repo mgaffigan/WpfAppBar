@@ -126,3 +126,27 @@ Dock and undock ([sample](https://github.com/mgaffigan/WpfAppBar/tree/master/Und
   [2]: https://i.stack.imgur.com/ifgn8.gif
   [3]: https://i.stack.imgur.com/PiydR.gif
   [4]: https://user-images.githubusercontent.com/12316225/95240977-c552da00-07d2-11eb-8ceb-8031641b1151.gif
+
+## Itp.WinFormsAppBar
+
+[![Nuget](https://img.shields.io/nuget/v/Itp.WinFormsAppBar)](https://www.nuget.org/packages/Itp.WinFormsAppBar)
+
+A WinForms variant also is available under Itp.WinFormsAppBar.  Edit Form1.cs to inherit from `AppBarForm` instead of `Form`.  
+See ([Itp.WinFormsAppBar.Demo](https://github.com/mgaffigan/WpfAppBar/tree/master/Itp.WinFormsAppBar.Demo)) for full demo.
+
+    public partial class Form1 : AppBarForm
+    {
+        public Form1()
+        {
+        }
+    }
+
+### Winforms Safe Context
+
+When using Itp.WinFormsAppBar you must update Program.cs to use `SystemEventsSafeAppContext` to [avoid hangs on exit](https://stackoverflow.com/a/76903356/138200).  Change:
+
+    Application.Run(new Form1());
+
+to
+
+    Application.Run(new SystemEventsSafeAppContext(new Form1()));
