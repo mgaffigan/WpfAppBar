@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 namespace Itp.WinFormsAppBar;
 
+#if NET5_0_OR_GREATER && !NET8_0_OR_GREATER
 public class SystemEventsSafeAppContext : ApplicationContext
 {
     [ThreadStatic]
@@ -41,3 +42,11 @@ public class SystemEventsSafeAppContext : ApplicationContext
         });
     }
 }
+#else
+public class SystemEventsSafeAppContext : ApplicationContext
+{
+    [Obsolete("SystemEventsSafeAppContext is only required for .NET 5 to .NET 7.  See https://github.com/dotnet/winforms/issues/9721")]
+    public SystemEventsSafeAppContext(Form mainForm) : base(mainForm) { /* nop */ }
+    public static void AssertSafeContext() { /* nop */ }
+}
+#endif
