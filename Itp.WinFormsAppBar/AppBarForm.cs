@@ -13,6 +13,7 @@ namespace Itp.WinFormsAppBar
     {
         private bool IsAppBarRegistered;
         private bool IsInAppBarResize;
+        private bool IsMinimized;
 
         public AppBarForm()
         {
@@ -99,10 +100,7 @@ namespace Itp.WinFormsAppBar
 
         private void DockLocation_Changed(object d, EventArgs e)
         {
-            if (this.IsAppBarRegistered)
-            {
-                this.OnDockLocationChanged();
-            }
+            this.OnDockLocationChanged();
         }
 
 #if NET472_OR_GREATER
@@ -163,7 +161,7 @@ namespace Itp.WinFormsAppBar
             {
                 return;
             }
-            if (IsInAppBarResize)
+            if (!IsAppBarRegistered || IsInAppBarResize)
             {
                 return;
             }
@@ -173,7 +171,7 @@ namespace Itp.WinFormsAppBar
 
             SHAppBarMessage(ABM.QUERYPOS, ref abd);
 
-            var dockedWidthOrHeightInDesktopPixels = WpfDimensionToDesktop(DockedWidthOrHeight);
+            var dockedWidthOrHeightInDesktopPixels = IsMinimized ? 0 : WpfDimensionToDesktop(DockedWidthOrHeight);
             switch (DockMode)
             {
                 case AppBarDockMode.Top:
@@ -192,19 +190,22 @@ namespace Itp.WinFormsAppBar
             }
 
             SHAppBarMessage(ABM.SETPOS, ref abd);
-            IsInAppBarResize = true;
-            try
+            if (!IsMinimized)
             {
-                SetBounds(
-                    DesktopDimensionToWpf(abd.rc.left),
-                    DesktopDimensionToWpf(abd.rc.top),
-                    DesktopDimensionToWpf(abd.rc.Width),
-                    DesktopDimensionToWpf(abd.rc.Height)
-                );
-            }
-            finally
-            {
-                IsInAppBarResize = false;
+                IsInAppBarResize = true;
+                try
+                {
+                    SetBounds(
+                        DesktopDimensionToWpf(abd.rc.left),
+                        DesktopDimensionToWpf(abd.rc.top),
+                        DesktopDimensionToWpf(abd.rc.Width),
+                        DesktopDimensionToWpf(abd.rc.Height)
+                    );
+                }
+                finally
+                {
+                    IsInAppBarResize = false;
+                }
             }
         }
 
@@ -239,11 +240,22 @@ namespace Itp.WinFormsAppBar
             {
                 // nop
             }
+            if (m.Msg == WM_SIZE)
+            {
+                this.IsMinimized = ShowInTaskbar && m.WParam == (IntPtr)SIZE_MINIMIZED;
+                OnDockLocationChanged();
+            }
             else if (m.Msg == WM_WINDOWPOSCHANGING && !IsInAppBarResize)
             {
                 var wp = Marshal.PtrToStructure<WINDOWPOS>(m.LParam);
-                wp.flags |= SWP_NOMOVE | SWP_NOSIZE;
-                Marshal.StructureToPtr(wp, m.LParam, false);
+                const int NOMOVE_NORESIZE = SWP_NOMOVE | SWP_NOSIZE;
+                if ((wp.flags & NOMOVE_NORESIZE) != NOMOVE_NORESIZE
+                    && !IsMinimized
+                    && !(wp.x == -32_000 && wp.y == -32_000) /* loc for minimized windows */)
+                {
+                    wp.flags |= NOMOVE_NORESIZE;
+                    Marshal.StructureToPtr(wp, m.LParam, false);
+                }
             }
             else if (m.Msg == WM_ACTIVATE)
             {

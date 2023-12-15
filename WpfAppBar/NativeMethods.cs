@@ -137,13 +137,15 @@ namespace Itp.WpfAppBar
             SWP_NOSIZE = 0x0001;
 
         public const int
+            WM_SIZE = 0x0005,
             WM_ACTIVATE = 0x0006,
             WM_WINDOWPOSCHANGED = 0x0047,
             WM_SYSCOMMAND = 0x0112,
             WM_WINDOWPOSCHANGING = 0x0046;
 
         public const int
-            SC_MOVE = 0xF010;
+            SC_MOVE = 0xF010,
+            SIZE_MINIMIZED = 1;
 
         public static int SC_FROM_WPARAM(IntPtr wparam)
         {

@@ -42,6 +42,7 @@
             <Button x:Name="btClose" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="23" Margin="10,10,0,0" Click="btClose_Click"/>
             <ComboBox x:Name="cbMonitor" SelectedItem="{Binding Path=Monitor, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="10,38,0,0"/>
             <ComboBox x:Name="cbEdge" SelectedItem="{Binding Path=DockMode, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="btMinimize" Content="_Minimize" Click="btMinimize_Click" HorizontalAlignment="Left" Margin="10,92,0,0" VerticalAlignment="Top" Width="75" Height="23" />
         </Grid>
     </DockPanel>
 </apb:AppBarWindow>

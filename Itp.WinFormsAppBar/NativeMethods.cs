@@ -133,6 +133,7 @@ namespace Itp.WinFormsAppBar
 
         public const int
             WM_DESTROY = 0x0002,
+            WM_SIZE = 0x0005,
             WM_ACTIVATE = 0x0006,
             WM_SHOWWINDOW = 0x0018,
             WM_WINDOWPOSCHANGED = 0x0047,
@@ -140,7 +141,8 @@ namespace Itp.WinFormsAppBar
             WM_WINDOWPOSCHANGING = 0x0046;
 
         public const int
-            SC_MOVE = 0xF010;
+            SC_MOVE = 0xF010,
+            SIZE_MINIMIZED = 1;
 
         public static int SC_FROM_WPARAM(IntPtr wparam)
         {

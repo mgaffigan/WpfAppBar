@@ -63,5 +63,11 @@ namespace WpfAppBarDemo
 
             this.DockedWidthOrHeight += (int)(delta / VisualTreeHelper.GetDpi(this).PixelsPerDip);
         }
+
+        private void btMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.ShowInTaskbar = true;
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

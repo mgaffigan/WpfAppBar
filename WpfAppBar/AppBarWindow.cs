@@ -17,6 +17,7 @@ namespace Itp.WpfAppBar
     {
         private bool IsAppBarRegistered;
         private bool IsInAppBarResize;
+        private bool IsMinimized;
 
         static AppBarWindow()
         {
@@ -106,10 +107,7 @@ namespace Itp.WpfAppBar
         {
             var @this = (AppBarWindow)d;
 
-            if (@this.IsAppBarRegistered)
-            {
-                @this.OnDockLocationChanged();
-            }
+            @this.OnDockLocationChanged();
         }
 
         protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
@@ -176,7 +174,11 @@ namespace Itp.WpfAppBar
 
         private void OnDockLocationChanged()
         {
-            if (IsInAppBarResize)
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
+            if (!IsAppBarRegistered || IsInAppBarResize)
             {
                 return;
             }
@@ -186,7 +188,7 @@ namespace Itp.WpfAppBar
 
             SHAppBarMessage(ABM.QUERYPOS, ref abd);
 
-            var dockedWidthOrHeightInDesktopPixels = WpfDimensionToDesktop(DockedWidthOrHeight);
+            var dockedWidthOrHeightInDesktopPixels = IsMinimized ? 0 : WpfDimensionToDesktop(DockedWidthOrHeight);
             switch (DockMode)
             {
                 case AppBarDockMode.Top:
@@ -205,14 +207,17 @@ namespace Itp.WpfAppBar
             }
 
             SHAppBarMessage(ABM.SETPOS, ref abd);
-            IsInAppBarResize = true;
-            try
+            if (!IsMinimized)
             {
-                WindowBounds = (Rect)abd.rc;
-            }
-            finally
-            {
-                IsInAppBarResize = false;
+                IsInAppBarResize = true;
+                try
+                {
+                    WindowBounds = (Rect)abd.rc;
+                }
+                finally
+                {
+                    IsInAppBarResize = false;
+                }
             }
         }
 
@@ -255,11 +260,22 @@ namespace Itp.WpfAppBar
 
         public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_WINDOWPOSCHANGING && !IsInAppBarResize)
+            if (msg == WM_SIZE)
+            {
+                this.IsMinimized = ShowInTaskbar && wParam == (IntPtr)SIZE_MINIMIZED;
+                OnDockLocationChanged();
+            }
+            else if (msg == WM_WINDOWPOSCHANGING && !IsInAppBarResize)
             {
                 var wp = Marshal.PtrToStructure<WINDOWPOS>(lParam);
-                wp.flags |= SWP_NOMOVE | SWP_NOSIZE;
-                Marshal.StructureToPtr(wp, lParam, false);
+                const int NOMOVE_NORESIZE = SWP_NOMOVE | SWP_NOSIZE;
+                if ((wp.flags & NOMOVE_NORESIZE) != NOMOVE_NORESIZE
+                    && !IsMinimized
+                    && !(wp.x == -32_000 && wp.y == -32_000) /* loc for minimized windows */)
+                {
+                    wp.flags |= NOMOVE_NORESIZE;
+                    Marshal.StructureToPtr(wp, lParam, false);
+                }
             }
             else if (msg == WM_ACTIVATE)
             {

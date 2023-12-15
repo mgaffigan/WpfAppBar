@@ -31,6 +31,7 @@
             btClose = new Button();
             cbMonitor = new ComboBox();
             cbEdge = new ComboBox();
+            btMinimize = new Button();
             SuspendLayout();
             // 
             // btClose
@@ -59,11 +60,22 @@
             cbEdge.Size = new Size(121, 23);
             cbEdge.TabIndex = 2;
             // 
+            // btMinimize
+            // 
+            btMinimize.Location = new Point(12, 99);
+            btMinimize.Name = "btMinimize";
+            btMinimize.Size = new Size(121, 23);
+            btMinimize.TabIndex = 3;
+            btMinimize.Text = "Show in &Taskbar";
+            btMinimize.UseVisualStyleBackColor = true;
+            btMinimize.Click += btMinimize_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(200, 200);
+            ClientSize = new Size(300, 300);
+            Controls.Add(btMinimize);
             Controls.Add(cbEdge);
             Controls.Add(cbMonitor);
             Controls.Add(btClose);
@@ -78,5 +90,6 @@
         private Button btClose;
         private ComboBox cbMonitor;
         private ComboBox cbEdge;
+        private Button btMinimize;
     }
 }

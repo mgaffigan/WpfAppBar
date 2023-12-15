@@ -32,6 +32,19 @@ public partial class Form1 : AppBarForm
         Close();
     }
 
+    private void btMinimize_Click(object sender, EventArgs e)
+    {
+        if (!ShowInTaskbar)
+        {
+            this.ShowInTaskbar = true;
+            this.btMinimize.Text = "&Minimize";
+        }
+        else
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+    }
+
     //private void rzThumb_DragCompleted(object sender, DragCompletedEventArgs e)
     //{
     //    double delta;
