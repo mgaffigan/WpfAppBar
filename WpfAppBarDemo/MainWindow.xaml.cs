@@ -34,6 +34,7 @@ namespace WpfAppBarDemo
                 AppBarDockMode.Bottom
             };
             this.cbMonitor.ItemsSource = MonitorInfo.GetAllMonitors();
+            this.cbMonitor.SelectedIndex = 0;
         }
 
         private void btClose_Click(object sender, RoutedEventArgs e)

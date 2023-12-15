@@ -301,15 +301,59 @@ namespace Itp.WpfAppBar
             return IntPtr.Zero;
         }
 
+        private Thickness FrameThickness;
+        private Point LastPosition = new Point(-32000, -32000);
         private Rect WindowBounds
         {
             set
             {
-                this.Left = DesktopDimensionToWpf(value.Left);
-                this.Top = DesktopDimensionToWpf(value.Top);
-                this.Width = DesktopDimensionToWpf(value.Width);
-                this.Height = DesktopDimensionToWpf(value.Height);
+                var ft = FrameThickness;
+                if (LastPosition != value.TopLeft)
+                {
+                    this.FrameThickness = ft = default;
+                }
+
+                void SetTopLeft()
+                {
+                    this.Left = DesktopDimensionToWpf(value.Left - ft.Left);
+                    this.Top = DesktopDimensionToWpf(value.Top - ft.Top);
+                }
+                SetTopLeft();
+
+                if (LastPosition != value.TopLeft)
+                {
+                    this.FrameThickness = ft = GetFrameThickness();
+                    this.LastPosition = value.TopLeft;
+                }
+
+                // If we got a new frame thickness (varies per monitor), update
+                if (FrameThickness.Top != 0 || FrameThickness.Left != 0)
+                {
+                    SetTopLeft();
+                }
+
+                this.Width = DesktopDimensionToWpf(value.Width + ft.Left + ft.Right);
+                this.Height = DesktopDimensionToWpf(value.Height + ft.Top + ft.Bottom);
             }
+        }
+
+        private Thickness GetFrameThickness()
+        {
+            var hWnd = new WindowInteropHelper(this).Handle;
+            if (!GetWindowRect(hWnd, out var clientBounds))
+            {
+                return default;
+            }
+            if (DwmGetWindowAttribute(hWnd, 9 /* DWMWA_EXTENDED_FRAME_BOUNDS */,
+                    out var frameBounds, Marshal.SizeOf<RECT>()) != 0 /* S_OK */)
+            {
+                return default;
+            }
+            return new Thickness(
+                frameBounds.left - clientBounds.left,
+                frameBounds.top - clientBounds.top,
+                clientBounds.right - frameBounds.right,
+                clientBounds.bottom - frameBounds.bottom);
         }
     }
 

@@ -10,8 +10,11 @@ namespace Itp.WpfAppBar
 {
     internal static class NativeMethods
     {
-        private const string User32 = "user32.dll";
-        private const string ShCore = "ShCore.dll";
+        private const string 
+            User32 = "User32.dll",
+            Shell32 = "Shell32.dll",
+            ShCore = "ShCore.dll",
+            Dwmapi = "Dwmapi.dll";
 
         public enum ABEdge
         {
@@ -144,8 +147,13 @@ namespace Itp.WpfAppBar
             WM_WINDOWPOSCHANGING = 0x0046;
 
         public const int
-            SC_MOVE = 0xF010,
+            SC_MOVE = 0xF010;
+
+        public const int
             SIZE_MINIMIZED = 1;
+
+        public const int
+            DWMWA_EXTENDED_FRAME_BOUNDS = 9;
 
         public static int SC_FROM_WPARAM(IntPtr wparam)
         {
@@ -184,33 +192,38 @@ namespace Itp.WpfAppBar
         public const int
             WS_EX_TOOLWINDOW = 0x00000080;
 
-        [DllImport("shell32.dll", ExactSpelling = true)]
+        [DllImport(Shell32, ExactSpelling = true)]
         public static extern uint SHAppBarMessage(ABM dwMessage, ref APPBARDATA pData);
 
-        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        [DllImport(User32, CharSet = CharSet.Unicode)]
         public static extern int RegisterWindowMessage(string msg);
 
-        [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
+        [DllImport(User32, ExactSpelling = true, SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
 
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, int index)
             => IntPtr.Size == 4 ? GetWindowLongPtr32(hWnd, index) : GetWindowLongPtr64(hWnd, index);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+        [DllImport(User32, EntryPoint = "GetWindowLong")]
         private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+        [DllImport(User32, EntryPoint = "GetWindowLongPtr")]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int index);
 
         public static IntPtr SetWindowLongPtr(IntPtr hWnd, int index, IntPtr newLong)
             => IntPtr.Size == 4 ? SetWindowLongPtr32(hWnd, index, newLong) : SetWindowLongPtr64(hWnd, index, newLong);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        [DllImport(User32, EntryPoint = "SetWindowLong")]
         private static extern IntPtr SetWindowLongPtr32(IntPtr hWnd, int index, IntPtr newLong);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        [DllImport(User32, EntryPoint = "SetWindowLongPtr")]
         private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int index, IntPtr newLong);
 
+        [DllImport(User32, SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
+
+        [DllImport(Dwmapi)]
+        public static extern int DwmGetWindowAttribute(IntPtr hWnd, uint dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         [Flags]
         public enum MONITORINFOF
