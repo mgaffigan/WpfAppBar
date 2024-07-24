@@ -47,6 +47,7 @@ namespace UndockSample
                     {
                         AppBarHost.Content = null;
                         AppBarHost.Close();
+                        AppBarHost = null;
                     }
 
                     WindowHost = new Window();
@@ -60,6 +61,7 @@ namespace UndockSample
                     {
                         WindowHost.Content = null;
                         WindowHost.Close();
+                        WindowHost = null;
                     }
 
                     AppBarHost = new AppBarWindow();
