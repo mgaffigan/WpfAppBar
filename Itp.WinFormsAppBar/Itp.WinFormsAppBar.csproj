@@ -6,6 +6,7 @@
 
     <Description>Winforms Window which creates a Windows App Bar</Description>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <VersionPrefix>2.1.0</VersionPrefix>
   </PropertyGroup>
   <Import Project="..\assets\EsattoCSCommon.targets" />
   <ItemGroup>

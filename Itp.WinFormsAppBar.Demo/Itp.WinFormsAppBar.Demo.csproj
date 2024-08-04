@@ -5,6 +5,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>true</ImplicitUsings>
     <HighDpiMode>PerMonitorV2</HighDpiMode>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>

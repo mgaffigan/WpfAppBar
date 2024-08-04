@@ -11,16 +11,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Build Itp.WpfAppBar
-      run: dotnet pack WpfAppBar -c Release -p:Version=${{github.ref_name}}
-    - name: NugetPush Itp.WpfAppBar
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} WpfAppBar/bin/Release/Itp.WpfAppBar.${{github.ref_name}}.nupkg
-    - name: Build Itp.WinFormsAppBar
-      run: dotnet pack Itp.WinFormsAppBar -c Release -p:Version=${{github.ref_name}}
-    - name: NugetPush Itp.WinFormsAppBar
-      run: dotnet nuget push -s https://www.nuget.org/api/v2/package --api-key ${{secrets.MG_NUGET_SECRET}} Itp.WinFormsAppBar/bin/Release/Itp.WinFormsAppBar.${{github.ref_name}}.nupkg
+    - uses: actions/checkout@v4
+    - name: Build
+      run: dotnet pack WpfAppBar.sln -c Release -p PackageOutputPath=${{github.workspace}}/dist
+    - name: NugetPush
+      run: dotnet nuget push -s https://api.nuget.org/v3/index.json --api-key ${{secrets.MG_NUGET_SECRET}} --skip-duplicate "${{github.workspace}}/dist/**/*.nupkg"
