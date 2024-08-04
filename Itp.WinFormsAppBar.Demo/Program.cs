@@ -9,7 +9,10 @@ internal static class Program
     static void Main()
     {
         ApplicationConfiguration.Initialize();
+#if NET5_0_OR_GREATER && !NET8_0_OR_GREATER
         Application.Run(new SystemEventsSafeAppContext(new Form1()));
-        //Application.Run(new Form1());
+#else
+        Application.Run(new Form1());
+#endif
     }
 }

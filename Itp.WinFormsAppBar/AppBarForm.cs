@@ -103,12 +103,17 @@ namespace Itp.WinFormsAppBar
             this.OnDockLocationChanged();
         }
 
-#if NET472_OR_GREATER
+#if NET472_OR_GREATER || NET
         protected override void OnDpiChanged(DpiChangedEventArgs e)
         {
             base.OnDpiChanged(e);
 
-            OnDockLocationChanged();
+            DockedWidthOrHeight = this.DockMode switch 
+            { 
+                AppBarDockMode.Left or AppBarDockMode.Right => e.SuggestedRectangle.Width, 
+                AppBarDockMode.Top or AppBarDockMode.Bottom => e.SuggestedRectangle.Height, 
+                _ => throw new NotSupportedException()
+            };
         }
 #endif
 
@@ -139,22 +144,6 @@ namespace Itp.WinFormsAppBar
             OnDockLocationChanged();
         }
 
-#if NET472_OR_GREATER
-        private int WpfDimensionToDesktop(int dim)
-        {
-            return (int)Math.Ceiling(dim * (DeviceDpi / 96d));
-        }
-
-        private int DesktopDimensionToWpf(int dim)
-        {
-            return (int)Math.Ceiling(dim / (DeviceDpi / 96d));
-        }
-#else
-        private int WpfDimensionToDesktop(int dim) => dim;
-
-        private int DesktopDimensionToWpf(int dim) => dim;
-#endif
-
         private void OnDockLocationChanged()
         {
             if (DesignMode || LicenseManager.UsageMode == LicenseUsageMode.Designtime)
@@ -171,7 +160,7 @@ namespace Itp.WinFormsAppBar
 
             SHAppBarMessage(ABM.QUERYPOS, ref abd);
 
-            var dockedWidthOrHeightInDesktopPixels = IsMinimized ? 0 : WpfDimensionToDesktop(DockedWidthOrHeight);
+            var dockedWidthOrHeightInDesktopPixels = IsMinimized ? 0 : DockedWidthOrHeight;
             switch (DockMode)
             {
                 case AppBarDockMode.Top:
@@ -196,10 +185,10 @@ namespace Itp.WinFormsAppBar
                 try
                 {
                     SetBounds(
-                        DesktopDimensionToWpf(abd.rc.left),
-                        DesktopDimensionToWpf(abd.rc.top),
-                        DesktopDimensionToWpf(abd.rc.Width),
-                        DesktopDimensionToWpf(abd.rc.Height)
+                        abd.rc.left,
+                        abd.rc.top,
+                        abd.rc.Width,
+                        abd.rc.Height
                     );
                 }
                 finally
