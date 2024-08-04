@@ -16,15 +16,6 @@ namespace Itp.WpfAppBar
             ShCore = "ShCore.dll",
             Dwmapi = "Dwmapi.dll";
 
-        public enum ABEdge
-        {
-            Left = 0,
-            Top,
-            Right,
-            Bottom,
-            None
-        }
-
         [StructLayout(LayoutKind.Sequential)]
         public struct APPBARDATA
         {
@@ -36,21 +27,22 @@ namespace Itp.WpfAppBar
             public IntPtr lParam;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct POINT
+        public struct THICKNESS(int l, int t, int r, int b) : IEquatable<THICKNESS>
         {
-            public int X;
-            public int Y;
+            public int left = l;
+            public int top = t;
+            public int right = r;
+            public int bottom = b;
 
-            public static explicit operator POINT(Point p)
-            {
-                return new POINT { X = (int)p.X, Y = (int)p.Y };
-            }
+            public override string ToString() => $"{{l: {left}, t: {top}, r: {right}, b: {bottom}}}";
 
-            public static explicit operator Point(POINT r)
-            {
-                return new Point(r.X, r.Y);
-            }
+            public override bool Equals(object obj) => obj is THICKNESS t && Equals(t);
+            public override int GetHashCode() => left ^ top ^ right ^ bottom;
+                
+            public bool Equals(THICKNESS t) => t.left == left && t.top == top && t.right == right && t.bottom == bottom;
+
+            public static bool operator ==(THICKNESS a, THICKNESS b) => a.Equals(b);
+            public static bool operator !=(THICKNESS a, THICKNESS b) => !a.Equals(b);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -79,22 +71,6 @@ namespace Itp.WpfAppBar
                 get { return bottom - top; }
             }
 
-            public void Offset(int dx, int dy)
-            {
-                left += dx;
-                top += dy;
-                right += dx;
-                bottom += dy;
-            }
-
-            public bool IsEmpty
-            {
-                get
-                {
-                    return left >= right || top >= bottom;
-                }
-            }
-
             public static explicit operator Int32Rect(RECT r)
             {
                 return new Int32Rect(r.left, r.top, r.Width, r.Height);
@@ -109,6 +85,16 @@ namespace Itp.WpfAppBar
             {
                 return new RECT((int)r.Left, (int)r.Top, (int)r.Right, (int)r.Bottom);
             }
+
+            public readonly RECT Inflate(THICKNESS t)
+            {
+                return new RECT(
+                    left - t.left,
+                    top - t.top,
+                    right + t.right,
+                    bottom + t.bottom
+                );
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -121,18 +107,6 @@ namespace Itp.WpfAppBar
             public int cx;
             public int cy;
             public int flags;
-
-            public Rect Bounds
-            {
-                get { return new Rect(x, y, cx, cy); }
-                set
-                {
-                    x = (int)value.X;
-                    y = (int)value.Y;
-                    cx = (int)value.Width;
-                    cy = (int)value.Height;
-                }
-            }
         }
 
         public const int
@@ -200,6 +174,9 @@ namespace Itp.WpfAppBar
 
         [DllImport(User32, ExactSpelling = true, SetLastError = true)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
+
+        public static bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, RECT rect, uint flags)
+            => SetWindowPos(hWnd, hWndInsertAfter, rect.left, rect.top, rect.Width, rect.Height, flags);
 
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, int index)
             => IntPtr.Size == 4 ? GetWindowLongPtr32(hWnd, index) : GetWindowLongPtr64(hWnd, index);

@@ -220,7 +220,7 @@ namespace Itp.WpfAppBar
                 IsInAppBarResize = true;
                 try
                 {
-                    WindowBounds = (Rect)abd.rc;
+                    WindowBounds = abd.rc;
                 }
                 finally
                 {
@@ -309,45 +309,31 @@ namespace Itp.WpfAppBar
             return IntPtr.Zero;
         }
 
-        private Thickness FrameThickness;
-        private Point LastPosition = new Point(-32000, -32000);
-        private Rect WindowBounds
+        private RECT WindowBounds
         {
             set
             {
-                var ft = FrameThickness;
-                if (LastPosition != value.TopLeft)
-                {
-                    this.FrameThickness = ft = default;
-                }
+                // SetWindowPos accepts the position _with_ the shadow, but we don't know how large the shadow
+                // will be until we are in place.
+                // 
+                // 1. Move to the position using current shadow
+                // 2. Get the actual shadow size
+                // 3. Move to the position using the actual shadow size
 
-                void SetTopLeft()
-                {
-                    this.Left = DesktopDimensionToWpf(value.Left - ft.Left);
-                    this.Top = DesktopDimensionToWpf(value.Top - ft.Top);
-                }
-                SetTopLeft();
+                var hwnd = new WindowInteropHelper(this).Handle;
+                var ft = GetFrameThickness(hwnd);
+                SetWindowPos(hwnd, IntPtr.Zero, value.Inflate(ft), 0);
 
-                if (LastPosition != value.TopLeft)
+                var newFrameThickness = GetFrameThickness(hwnd);
+                if (ft != newFrameThickness)
                 {
-                    this.FrameThickness = ft = GetFrameThickness();
-                    this.LastPosition = value.TopLeft;
+                    SetWindowPos(hwnd, IntPtr.Zero, value.Inflate(ft), 0);
                 }
-
-                // If we got a new frame thickness (varies per monitor), update
-                if (FrameThickness.Top != 0 || FrameThickness.Left != 0)
-                {
-                    SetTopLeft();
-                }
-
-                this.Width = DesktopDimensionToWpf(value.Width + ft.Left + ft.Right);
-                this.Height = DesktopDimensionToWpf(value.Height + ft.Top + ft.Bottom);
             }
         }
 
-        private Thickness GetFrameThickness()
+        private static THICKNESS GetFrameThickness(IntPtr hWnd)
         {
-            var hWnd = new WindowInteropHelper(this).Handle;
             if (!GetWindowRect(hWnd, out var clientBounds))
             {
                 return default;
@@ -357,7 +343,7 @@ namespace Itp.WpfAppBar
             {
                 return default;
             }
-            return new Thickness(
+            return new THICKNESS(
                 frameBounds.left - clientBounds.left,
                 frameBounds.top - clientBounds.top,
                 clientBounds.right - frameBounds.right,
