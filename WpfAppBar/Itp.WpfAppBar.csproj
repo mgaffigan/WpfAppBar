@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;net48;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net48;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
 
     <Description>WPF Window which creates a Windows App Bar</Description>
