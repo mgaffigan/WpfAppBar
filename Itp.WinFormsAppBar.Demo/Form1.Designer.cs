@@ -32,6 +32,7 @@
             cbMonitor = new ComboBox();
             cbEdge = new ComboBox();
             btMinimize = new Button();
+            dragThumb1 = new DragThumb();
             SuspendLayout();
             // 
             // btClose
@@ -70,11 +71,18 @@
             btMinimize.UseVisualStyleBackColor = true;
             btMinimize.Click += btMinimize_Click;
             // 
+            // dragThumb1
+            // 
+            dragThumb1.Name = "dragThumb1";
+            dragThumb1.Text = "dragThumb1";
+            dragThumb1.DragDelta += dragThumb1_DragDelta;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(300, 300);
+            Controls.Add(dragThumb1);
             Controls.Add(btMinimize);
             Controls.Add(cbEdge);
             Controls.Add(cbMonitor);
@@ -91,5 +99,6 @@
         private ComboBox cbMonitor;
         private ComboBox cbEdge;
         private Button btMinimize;
+        private DragThumb dragThumb1;
     }
 }
