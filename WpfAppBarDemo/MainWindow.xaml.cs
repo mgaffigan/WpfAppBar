@@ -33,7 +33,10 @@ namespace WpfAppBarDemo
                 AppBarDockMode.Top,
                 AppBarDockMode.Bottom
             };
-            this.cbMonitor.ItemsSource = MonitorInfo.GetAllMonitors();
+            this.cbMonitor.ItemsSource = MonitorInfo.GetAllMonitors()
+                .OrderBy(o => o.ViewportBounds.Left)
+                .ThenBy(o => o.ViewportBounds.Top)
+                .ToArray();
             this.cbMonitor.SelectedIndex = 0;
         }
 

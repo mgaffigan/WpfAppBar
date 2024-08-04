@@ -10,7 +10,10 @@ public partial class Form1 : AppBarForm
         cbEdge.SelectedIndex = 0;
         cbEdge.SelectedIndexChanged += cbEdge_SelectedIndexChanged;
 
-        var monitors = MonitorInfo.GetAllMonitors().ToArray();
+        var monitors = MonitorInfo.GetAllMonitors()
+                .OrderBy(o => o.ViewportBounds.Left)
+                .ThenBy(o => o.ViewportBounds.Top)
+                .ToArray();
         Monitor = monitors[0];
         cbMonitor.Items.AddRange(monitors);
         cbMonitor.SelectedIndex = 0;
