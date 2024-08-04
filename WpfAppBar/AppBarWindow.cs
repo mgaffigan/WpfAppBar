@@ -7,10 +7,11 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Itp.WpfAppBar
 {
-    using System.Windows.Media;
     using static NativeMethods;
 
     public class AppBarWindow : Window
@@ -114,7 +115,14 @@ namespace Itp.WpfAppBar
         {
             base.OnDpiChanged(oldDpi, newDpi);
 
-            OnDockLocationChanged();
+            Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, () =>
+            {
+                // WPF seems to have a race condition during DPI changes where the window size
+                // is not updated.  We have to force it away to get it to update.
+                Width -= 1;
+                Height -= 1;
+                OnDockLocationChanged();
+            });
         }
 
         protected override void OnSourceInitialized(EventArgs e)
